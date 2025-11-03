@@ -4,6 +4,8 @@ public class Vault {
     private final int password;
 
     public Vault(int password) {
+        if (password < 0 || password > 9999)
+            throw new IllegalArgumentException("Password must be between 0 and 9999");
         this.password = password;
     }
 
@@ -14,5 +16,12 @@ public class Vault {
             Thread.currentThread().interrupt();
         }
         return this.password == guess;
+    }
+
+    //! I added this function to be able to implement the binary search hacker!
+    public int comparePassword(int guess){
+        if (guess < password) return -1;
+        if (guess > password) return 1;
+        return 0;
     }
 }
