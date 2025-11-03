@@ -1,4 +1,4 @@
-package org.parallelcomp;
+package org.parallelcomp.model;
 
 public class Vault {
     private final int password;
@@ -20,8 +20,17 @@ public class Vault {
 
     //! I added this function to be able to implement the binary search hacker!
     public int comparePassword(int guess){
+        try {
+            Thread.sleep(5); // Simulate 5ms verification delay
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+
         if (guess < password) return -1;
         if (guess > password) return 1;
         return 0;
+    }
+    public int getPassword() {
+        return password;
     }
 }
