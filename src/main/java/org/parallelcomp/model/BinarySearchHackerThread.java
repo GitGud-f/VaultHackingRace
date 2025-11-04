@@ -13,7 +13,7 @@ public class BinarySearchHackerThread extends HackerThread {
     @Override
     public void guessPassword() {
         while (low <= high) {
-            if (gui.isGameOver()) {
+            if (gui != null && gui.isGameOver()) {
                 return;
             }
             int mid = low + (high - low) / 2;

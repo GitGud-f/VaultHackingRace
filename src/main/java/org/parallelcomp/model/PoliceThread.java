@@ -19,14 +19,20 @@ public class PoliceThread extends Thread {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            if (gui.isGameOver()) {
+            if (gui != null && gui.isGameOver()) {
                 return;
             }
             this.time--;
             System.out.println("Time remaining: " + this.time + " seconds");
         }
-        System.out.println("Game over for you hackers");
-        gui.setWinner("Game over for you hackers");
+        String message = "Game over for you hackers";
+        System.out.println(message);
+        if (gui != null) {
+            gui.setWinner(message);
+        }
+        else {
+            System.exit(0);
+        }
     }
 
 

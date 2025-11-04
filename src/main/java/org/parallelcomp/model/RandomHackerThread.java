@@ -18,7 +18,7 @@ public class RandomHackerThread extends HackerThread {
     @Override
     public void guessPassword() {
         while (tried.size() < 10000) {
-            if (gui.isGameOver()) {
+            if (gui != null && gui.isGameOver()) {
                 return;
             }
             int guess = random.nextInt(10000);

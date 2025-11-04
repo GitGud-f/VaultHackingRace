@@ -20,8 +20,14 @@ public abstract class HackerThread extends Thread {
 
     // Helper to report success and terminate cleanly
     protected void reportSuccess(int guess) {
-        System.out.println(this.getName() + " guessed the password: " + guess);
-        gui.setWinner(this.getName() + " guessed the password: " + guess);
+        String message = this.getName() + " guessed the password: " + guess;
+        if (gui != null) {
+            gui.setWinner(message);
+        } else {
+            System.out.println(message);
+            System.exit(0);
+        }
+        return;
     }
 
     public int getCurrentGuess() {

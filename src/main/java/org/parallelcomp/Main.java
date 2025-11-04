@@ -6,5 +6,8 @@ public class Main {
     public static void main(String[] args) {
         // Launch the GUI version
         VaultHackingGUI.launchGUI();
-    }
+
+        // Or uncomment below for console version
+//         ConsoleMain.consoleVersion();
+        }
 }

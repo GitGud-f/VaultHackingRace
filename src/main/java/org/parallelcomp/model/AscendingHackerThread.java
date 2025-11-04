@@ -12,7 +12,7 @@ public class AscendingHackerThread extends HackerThread {
     public void guessPassword() {
         for (int guess = 0; guess <= 9999; guess++) {
             this.currentGuess = guess;
-            if (gui.isGameOver()) {
+            if (gui != null && gui.isGameOver()) {
                 return;
             }
             if (vault.isCorrectPassword(guess)) {
