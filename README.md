@@ -89,6 +89,3 @@ Note: The binary search hacker is commented out in the GUI but available in the 
 
 ## License
 This project is for educational purposes only. No license specified.
-
-## Acknowledgments
-Based on the assignment "البرمجة المتوازية - النياسب المتعددة" from HIAST, 2025.
