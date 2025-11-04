@@ -20,10 +20,11 @@ public class VaultHackingGUI extends JFrame {
     private JProgressBar ascProgressBar;
     private JProgressBar descProgressBar;
     private JProgressBar randProgressBar;
-    private JProgressBar binProgressBar;
+    //private JProgressBar binProgressBar;
     private JProgressBar policeProgressBar;
 
     private JButton startButton;
+    private JButton restartButton;
     private JLabel statusLabel;
 
     private javax.swing.Timer uiTimer;
@@ -35,21 +36,6 @@ public class VaultHackingGUI extends JFrame {
     }
 
     private VaultHackingGUI() {
-        Random rnd = new Random();
-        int password = rnd.nextInt(10000);
-        vault = new Vault(password);
-
-        ascending = new AscendingHackerThread(vault, this);
-        descending = new DescendingHackerThread(vault, this);
-        random = new RandomHackerThread(vault, this);
-        //binary = new BinarySearchHackerThread(vault, this);
-        police = new PoliceThread(10, this);
-
-        ascending.setPriority(Thread.MAX_PRIORITY);
-        descending.setPriority(Thread.MAX_PRIORITY);
-        random.setPriority(Thread.MAX_PRIORITY);
-      //  binary.setPriority(Thread.MAX_PRIORITY);
-
         initializeUI();
     }
 
@@ -75,9 +61,9 @@ public class VaultHackingGUI extends JFrame {
         add(createHackerPanel("Random Hacker", randProgressBar), gbc);
         gbc.gridy++;
 
-     //   binProgressBar = new JProgressBar(0, 10000);
-      //  add(createHackerPanel("Binary Search Hacker", binProgressBar), gbc);
-      //  gbc.gridy++;
+        /*binProgressBar = new JProgressBar(0, 10000);
+        add(createHackerPanel("Binary Search Hacker", binProgressBar), gbc);
+        gbc.gridy++; */
 
         JPanel policePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         policePanel.add(new JLabel("Police Time Remaining:"));
@@ -92,12 +78,26 @@ public class VaultHackingGUI extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                statusLabel.setText("Race in progress...");
+                prepareSimulation();
                 startSimulation();
                 startButton.setEnabled(false);
+                restartButton.setEnabled(false);
             }
         });
         add(startButton, gbc);
+        gbc.gridy++;
+
+        restartButton = new JButton("Restart");
+        restartButton.setEnabled(false);
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                prepareSimulation();
+                startSimulation();
+                restartButton.setEnabled(false);
+            }
+        });
+        add(restartButton, gbc);
         gbc.gridy++;
 
         statusLabel = new JLabel("Press start to begin");
@@ -116,14 +116,46 @@ public class VaultHackingGUI extends JFrame {
         return panel;
     }
 
+    private void prepareSimulation() {
+        gameOver = false;
+        Random rnd = new Random();
+        int password = rnd.nextInt(10000);
+        vault = new Vault(password);
+
+        ascending = new AscendingHackerThread(vault, this);
+        descending = new DescendingHackerThread(vault, this);
+        random = new RandomHackerThread(vault, this);
+        //binary = new BinarySearchHackerThread(vault, this);
+        police = new PoliceThread(10, this);
+
+        ascending.setPriority(Thread.MAX_PRIORITY);
+        descending.setPriority(Thread.MAX_PRIORITY);
+        random.setPriority(Thread.MAX_PRIORITY);
+      //  binary.setPriority(Thread.MAX_PRIORITY);
+
+        resetProgressBars();
+        statusLabel.setText("Race in progress...");
+    }
+
+    private void resetProgressBars() {
+        ascProgressBar.setValue(0);
+        descProgressBar.setValue(0);
+        randProgressBar.setValue(0);
+        // binProgressBar.setValue(0);
+        policeProgressBar.setValue(10);
+    }
+
     private void startSimulation() {
+        if (uiTimer != null && uiTimer.isRunning()) {
+            uiTimer.stop();
+        }
         uiTimer = new javax.swing.Timer(100, e -> updateProgressBars());
         uiTimer.start();
 
         ascending.start();
         descending.start();
         random.start();
-      //  binary.start();
+        //binary.start();
         police.start();
     }
 
@@ -137,9 +169,9 @@ public class VaultHackingGUI extends JFrame {
         if (random.isAlive()) {
             randProgressBar.setValue(random.getProgress());
         }
-      //  if (binary.isAlive()) {
-       //     binProgressBar.setValue(binary.getProgress());
-       // }
+   //     if (binary.isAlive()) {
+   //         binProgressBar.setValue(binary.getProgress());
+   //     }
         policeProgressBar.setValue(police.getTimeRemaining());
     }
 
@@ -156,6 +188,7 @@ public class VaultHackingGUI extends JFrame {
         SwingUtilities.invokeLater(() -> {
             statusLabel.setText(message);
             uiTimer.stop();
+            restartButton.setEnabled(true);
         });
     }
 }
