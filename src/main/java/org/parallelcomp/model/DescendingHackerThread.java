@@ -5,7 +5,7 @@ import org.parallelcomp.ui.VaultHackingGUI;
 public class DescendingHackerThread extends HackerThread {
     public DescendingHackerThread(Vault vault, VaultHackingGUI gui) {
         super(vault, gui);
-        this.setName("DescendingHacker");
+        this.setName("Descending Hacker");
     }
 
     @Override
