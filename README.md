@@ -40,7 +40,7 @@ Note: The binary search hacker is commented out in the GUI but available in the 
 ## How to Run
 1. Clone the repository:
    ```
-   git clone https://github.com/k3rnel-paN1c5/VaultHackingRace
+   git clone https://github.com/GitGud-f/VaultHackingRace
    ```
 2. Compile the Java files:
    ```
